@@ -32,7 +32,7 @@ export default ({
   font,
   selectedDateStyle,
 }: IProps) => {
-  const weekDayShort = moment.weekdaysShort();
+  const weekDayShort = moment.weekdaysMin();
   const weekDayShortName = weekDayShort.map((day) => {
     return (
       <View key={`${day}_week_days`} style={styles.dayNameContainer}>

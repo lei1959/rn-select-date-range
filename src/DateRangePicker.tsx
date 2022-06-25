@@ -17,6 +17,21 @@ interface IResponse {
   secondDate: string | moment.Moment;
 }
 
+/*const thaiMonths = [
+  "ม.ค",
+  "ก.พ.",
+  "มี.ค",
+  "เม.ย",
+  "อาจ",
+  "จุน",
+  "ก.ค.",
+  "ส.ค",
+  "ก.ย",
+  "ต.ค.",
+  "พ.ย",
+  "ธ.ค",
+];*/
+
 interface IProps {
   onSelectDateRange: (response: IResponse) => void;
   responseFormat?: string;
@@ -27,6 +42,9 @@ interface IProps {
   selectedDateContainerStyle?: ViewStyle;
   selectedDateStyle?: TextStyle;
   ln?: string;
+  displayYear: boolean;
+  showCleanButton: boolean;
+  clearButtonText: string;
 }
 
 const DateRangePicker = ({
@@ -39,6 +57,9 @@ const DateRangePicker = ({
   selectedDateContainerStyle,
   selectedDateStyle,
   ln = "en",
+  displayYear = true,
+  showCleanButton = true,
+  clearButtonText = "clear",
 }: IProps) => {
   const [selectedDate, setSelectedDate] = useState(moment());
 
@@ -107,39 +128,40 @@ const DateRangePicker = ({
 
   return (
     <View>
+      {displayYear ? (
+        <View style={styles.titleRow}>
+          <Button
+            font={font}
+            disabled={minDate ? lastYear.isBefore(minDate, "months") : false}
+            label={`< ${lastYear.format("YYYY")}`}
+            onPress={() => setSelectedDate(lastYear)}
+          />
+          <Text style={{ ...styles.title, fontFamily: font }}>
+            {selectedDate.format("YYYY")}
+          </Text>
+          <Button
+            font={font}
+            disabled={maxDate ? nextYear.isAfter(maxDate, "months") : false}
+            label={`${nextYear.format("YYYY")} >`}
+            onPress={() => setSelectedDate(nextYear)}
+            align="right"
+          />
+        </View>
+      ) : null}
       <View style={styles.titleRow}>
-        <Button
-          font={font}
-          disabled={minDate ? lastYear.isBefore(minDate, "months") : false}
-          label={`< ${lastYear.format("YYYY")}`}
-          onPress={() => setSelectedDate(lastYear)}
-        />
-        <Text style={{ ...styles.title, fontFamily: font }}>
-          {selectedDate.format("YYYY")}
-        </Text>
-        <Button
-          font={font}
-          disabled={maxDate ? nextYear.isAfter(maxDate, "months") : false}
-          label={`${nextYear.format("YYYY")} >`}
-          onPress={() => setSelectedDate(nextYear)}
-          align="right"
-        />
-      </View>
-
-      <View style={styles.titleRow}>
-        <Button
-          font={font}
-          disabled={minDate ? lastMonth.isBefore(minDate, "months") : false}
-          label={`< ${lastMonth.locale(ln).format("MMM")}`}
-          onPress={() => setSelectedDate(lastMonth)}
-        />
         <Text style={{ ...styles.title, fontFamily: font }}>
           {selectedDate.locale(ln).format("MMMM")}
         </Text>
         <Button
           font={font}
+          disabled={minDate ? lastMonth.isBefore(minDate, "months") : false}
+          label={`<`}
+          onPress={() => setSelectedDate(lastMonth)}
+        />
+        <Button
+          font={font}
           disabled={maxDate ? nextMonth.isAfter(maxDate, "months") : false}
-          label={`${nextMonth.locale(ln).format("MMM")} >`}
+          label={`>`}
           onPress={() => setSelectedDate(nextMonth)}
           align="right"
         />
@@ -155,15 +177,17 @@ const DateRangePicker = ({
         selectedDateContainerStyle={selectedDateContainerStyle}
         selectedDateStyle={selectedDateStyle}
       />
-      <View style={styles.clearContainer}>
-        <Pressable
-          disabled={isDateSelected()}
-          onPress={onPressClear}
-          style={[styles.clearBtn, { opacity: isDateSelected() ? 0.3 : 1 }]}
-        >
-          <Text style={{ fontFamily: font }}>Clear</Text>
-        </Pressable>
-      </View>
+      {showCleanButton ? (
+        <View style={styles.clearContainer}>
+          <Pressable
+            disabled={isDateSelected()}
+            onPress={onPressClear}
+            style={[styles.clearBtn, { opacity: isDateSelected() ? 0.3 : 1 }]}
+          >
+            <Text style={{ fontFamily: font }}>{clearButtonText}</Text>
+          </Pressable>
+        </View>
+      ) : null}
     </View>
   );
 };
