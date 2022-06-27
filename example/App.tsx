@@ -1,12 +1,6 @@
 import moment from 'moment';
 import React, {useEffect, useState} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
 import DateRangePicker from '../example/src/components/DateRangePicker';
 
 const App = () => {

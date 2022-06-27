@@ -26,8 +26,6 @@ interface IProps {
   minDate?: moment.Moment;
   font?: string;
   ln?: string;
-  handleAgree: () => void;
-  handleAgree: () => void;
 }
 
 const DateRangePicker = ({
@@ -37,7 +35,6 @@ const DateRangePicker = ({
   minDate,
   font,
   ln = 'en',
-  handleAgree,
 }: IProps) => {
   const [selectedDate, setSelectedDate] = useState(moment());
 
@@ -132,10 +129,7 @@ const DateRangePicker = ({
       />
       <View>
         <TouchableOpacity onPress={onPressClear}>
-          <Text style={styles.cancel}>ยกเลิก</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleAgree}>
-          <Text style={styles.agree}>ตกลง</Text>
+          <Text style={styles.cancel}>clear</Text>
         </TouchableOpacity>
       </View>
     </View>
